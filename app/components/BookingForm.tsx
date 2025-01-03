@@ -23,7 +23,7 @@ const BookingForm: React.FC = () => {
         if (date) {
             const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
             axios
-                .get("http://localhost:5000/api/bookings/get-available-slots", {
+                .get("http://restaurant-booking-backend-production-667c.up.railway.app/api/bookings/get-available-slots", {
                     params: { date: localDate.toISOString().split("T")[0] },
                 })
                 .then((response) => {
@@ -45,12 +45,16 @@ const BookingForm: React.FC = () => {
         const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
         setIsSubmitting(true);
         try {
-            const response = await axios.post("http://localhost:5000/api/bookings/create-booking", {
+            const response = await axios.post("http://restaurant-booking-backend-production-667c.up.railway.app/api/bookings/create-booking", {
                 date: localDate.toISOString().split("T")[0],
                 time: selectedSlot,
                 guests,
                 name,
                 contact,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
             // Update booking details to show in UI
             setBookingDetails(response.data.data);
